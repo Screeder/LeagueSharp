@@ -921,6 +921,9 @@
   <data name="MISCS_ANTINEXUSTURRET_ABILITIES" xml:space="preserve">
     <value>Abilities</value>
   </data>
+  <data name="DETECTORS_SHAREDEXPERIENCE_ONLYINVISIBLE" xml:space="preserve">
+    <value>Only when hiding</value>
+  </data>
   <data name="GLOBAL_DRAWING" xml:space="preserve">
     <value>Drawing</value>
   </data>
