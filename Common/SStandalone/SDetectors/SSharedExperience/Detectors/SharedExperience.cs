@@ -148,12 +148,18 @@ namespace SAssemblies.Detectors
                                 }
                                 if (SharedExperienceDetector.GetMenuItem("SAssembliesDetectorsSharedExperienceDrawing").GetValue<bool>())
                                 {
-                                    if (SharedExperienceDetector.GetMenuItem("SAssembliesDetectorsSharedExperienceOnlyInvisible").GetValue<bool>() && missingEnemies > 0 ||
+                                    if ((SharedExperienceDetector.GetMenuItem("SAssembliesDetectorsSharedExperienceOnlyInvisible").GetValue<bool>() && missingEnemies > 0) ||
                                         !SharedExperienceDetector.GetMenuItem("SAssembliesDetectorsSharedExperienceOnlyInvisible").GetValue<bool>())
                                     {
                                         enemy.Value.Text.text = "Enemies: " + visibleEnemyCount + "(+" + missingEnemies + ")";
                                         enemy.Value.Circle.Visible = true;
                                         enemy.Value.Text.Visible = true;
+                                    }
+                                    else if (SharedExperienceDetector.GetMenuItem("SAssembliesDetectorsSharedExperienceOnlyInvisible").GetValue<bool>() && missingEnemies == 0)
+                                    {
+                                        enemy.Value.Text.text = "";
+                                        enemy.Value.Text.Visible = false;
+                                        enemy.Value.Circle.Visible = false;
                                     }
                                 }
                             }
