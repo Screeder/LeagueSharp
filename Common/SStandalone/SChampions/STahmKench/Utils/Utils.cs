@@ -39,9 +39,15 @@ namespace SAssemblies
     using System.Net.Http;
     using System.Security.Permissions;
 
+    using LeagueSharp.SDK;
+
     using Blend = SharpDX.Direct3D9.Blend;
     using Font = System.Drawing.Font;
+    using Geometry = LeagueSharp.Common.Geometry;
+    using Items = LeagueSharp.Common.Items;
     using Matrix = SharpDX.Matrix;
+    using Notification = LeagueSharp.Common.Notification;
+    using Notifications = LeagueSharp.Common.Notifications;
 
     class Menu
     {
@@ -1942,144 +1948,165 @@ namespace SAssemblies
 
     internal static class DirectXDrawer
     {
-        private static void InternalRender(Vector3 target)
+        public static void InternalRender(Vector3 target)
         {
-            //Drawing.Direct3DDevice.SetTransform(TransformState.World, Matrix.Translation(target));
-            //Drawing.Direct3DDevice.SetTransform(TransformState.View, Drawing.View);
-            //Drawing.Direct3DDevice.SetTransform(TransformState.Projection, Drawing.Projection);
+            Drawing.Direct3DDevice.SetTransform(TransformState.World, Matrix.Translation(target));
+            Drawing.Direct3DDevice.SetTransform(TransformState.View, Drawing.View);
+            Drawing.Direct3DDevice.SetTransform(TransformState.Projection, Drawing.Projection);
 
-            Drawing.Direct3DDevice.VertexShader = null;
-            Drawing.Direct3DDevice.PixelShader = null;
-            Drawing.Direct3DDevice.SetRenderState(RenderState.AlphaBlendEnable, true);
-            Drawing.Direct3DDevice.SetRenderState(RenderState.BlendOperation, BlendOperation.Add);
-            Drawing.Direct3DDevice.SetRenderState(RenderState.DestinationBlend, Blend.InverseSourceAlpha);
-            Drawing.Direct3DDevice.SetRenderState(RenderState.SourceBlend, Blend.SourceAlpha);
-            Drawing.Direct3DDevice.SetRenderState(RenderState.Lighting, 0);
-            Drawing.Direct3DDevice.SetRenderState(RenderState.ZEnable, true);
-            Drawing.Direct3DDevice.SetRenderState(RenderState.AntialiasedLineEnable, true);
-            Drawing.Direct3DDevice.SetRenderState(RenderState.Clipping, true);
-            Drawing.Direct3DDevice.SetRenderState(RenderState.EnableAdaptiveTessellation, true);
-            Drawing.Direct3DDevice.SetRenderState(RenderState.MultisampleAntialias, true);
-            Drawing.Direct3DDevice.SetRenderState(RenderState.ShadeMode, ShadeMode.Gouraud);
-            Drawing.Direct3DDevice.SetTexture(0, null);
-            Drawing.Direct3DDevice.SetRenderState(RenderState.CullMode, Cull.None);
+            //Drawing.Direct3DDevice.VertexShader = null;
+            //Drawing.Direct3DDevice.PixelShader = null;
+            //Drawing.Direct3DDevice.SetRenderState(RenderState.AlphaBlendEnable, true);
+            //Drawing.Direct3DDevice.SetRenderState(RenderState.BlendOperation, BlendOperation.Add);
+            //Drawing.Direct3DDevice.SetRenderState(RenderState.DestinationBlend, Blend.InverseSourceAlpha);
+            //Drawing.Direct3DDevice.SetRenderState(RenderState.SourceBlend, Blend.SourceAlpha);
+            //Drawing.Direct3DDevice.SetRenderState(RenderState.Lighting, 0);
+            //Drawing.Direct3DDevice.SetRenderState(RenderState.ZEnable, true);
+            //Drawing.Direct3DDevice.SetRenderState(RenderState.AntialiasedLineEnable, true);
+            //Drawing.Direct3DDevice.SetRenderState(RenderState.Clipping, true);
+            //Drawing.Direct3DDevice.SetRenderState(RenderState.EnableAdaptiveTessellation, true);
+            //Drawing.Direct3DDevice.SetRenderState(RenderState.MultisampleAntialias, true);
+            //Drawing.Direct3DDevice.SetRenderState(RenderState.ShadeMode, ShadeMode.Gouraud);
+            //Drawing.Direct3DDevice.SetTexture(0, null);
+            //Drawing.Direct3DDevice.SetRenderState(RenderState.CullMode, Cull.None);
         }
 
-//        VOID WorldToScreen(D3DXVECTOR3* vecWorld, D3DXVECTOR3* vecScreen)
-//{
-//    CView* pView = *(CView**)(0xE3A00C);
-//    PVOID ThisPtr = pView->ThisPtr;
- 
-//    D3DVIEWPORT9 viewPort;
-//    memset(&viewPort, 0, sizeof(viewPort));
- 
-//    typedef VOID (__thiscall* GetViewportFn)(PVOID, D3DVIEWPORT9*);
-//    CallVirtual<GetViewportFn >(ThisPtr, 56)(ThisPtr, &viewPort);
- 
-//    CMatrixData* pMatrixData = *(CMatrixData**)0xE3A00C;
- 
-//    D3DXMATRIX matWorld;
-//    memset(&matWorld, 0, sizeof(matWorld));
- 
-//    D3DXMatrixIdentity(&matWorld);
- 
-//    D3DXMATRIX matProjection = pMatrixData->m_matProjection;
-//    D3DXMATRIX matView = pMatrixData->m_matView;
- 
-//    D3DXVec3Project(vecScreen, vecWorld, &viewPort, &matProjection, &matView, &matWorld);
- 
-//    vecScreen->x = (vecScreen->x - pView->_unknown0x112F4) / (pView->m_ResolutionWidth - pView->_unknown0x112F4) * pView->m_Width;
-//    vecScreen->y = (vecScreen->y - pView->_unknown0x112F8) / (pView->m_ResolutionHeight - pView->_unknown0x112F8) * pView->m_Height;
-//}
+        //        VOID WorldToScreen(D3DXVECTOR3* vecWorld, D3DXVECTOR3* vecScreen)
+        //{
+        //    CView* pView = *(CView**)(0xE3A00C);
+        //    PVOID ThisPtr = pView->ThisPtr;
 
-//        #define OFFSET_RENDERER            0x1D3D794 
-//#define OFFSET_D3D9DEVICE        0x1C226A4 
+        //    D3DVIEWPORT9 viewPort;
+        //    memset(&viewPort, 0, sizeof(viewPort));
 
-//class CRenderer 
-//{ 
-//public: 
-//    char _0x0000[40]; 
-//    __int32 m_Width; //0x0028  
-//    __int32 m_Height; //0x002C  
-//    char _0x0030[108]; 
-//    D3DXMATRIX m_View; //0x009C  
-//    D3DXMATRIX m_Projection; //0x00DC 
+        //    typedef VOID (__thiscall* GetViewportFn)(PVOID, D3DVIEWPORT9*);
+        //    CallVirtual<GetViewportFn >(ThisPtr, 56)(ThisPtr, &viewPort);
 
-//    static LPDIRECT3DDEVICE9 GetDevice( ) 
-//    { 
-//        return *( IDirect3DDevice9** )( OFFSET_D3D9DEVICE ); 
-//    }; 
+        //    CMatrixData* pMatrixData = *(CMatrixData**)0xE3A00C;
 
-//    static CRenderer* GetInstance( void ) 
-//    { 
-//        return *( CRenderer** )( OFFSET_RENDERER ); 
-//    }; 
+        //    D3DXMATRIX matWorld;
+        //    memset(&matWorld, 0, sizeof(matWorld));
 
-//    void WorldToScreen( D3DXVECTOR3* vWorld, D3DXVECTOR3* vScreen ) 
-//    { 
-//        // Create identity matrix for the world 
-//        D3DXMATRIX mWorld; 
-//        memset( &mWorld, 0, sizeof( mWorld ) ); 
-//        D3DXMatrixIdentity( &mWorld ); 
+        //    D3DXMatrixIdentity(&matWorld);
 
-//        // Get view port 
-//        D3DVIEWPORT9 vp; 
-//        this->GetDevice( )->GetViewport( &vp ); 
-         
-//        // Project 
-//        D3DXVec3Project( vScreen, vWorld, &vp, &this->m_Projection, &this->m_View, &mWorld ); 
+        //    D3DXMATRIX matProjection = pMatrixData->m_matProjection;
+        //    D3DXMATRIX matView = pMatrixData->m_matView;
 
-//        vScreen->x = ( vScreen->x ) / ( this->m_Width  ) * this->m_Width; 
-//        vScreen->y = ( vScreen->y ) / ( this->m_Height ) * this->m_Height; 
-//    }; 
-//}; 
+        //    D3DXVec3Project(vecScreen, vecWorld, &viewPort, &matProjection, &matView, &matWorld);
+
+        //    vecScreen->x = (vecScreen->x - pView->_unknown0x112F4) / (pView->m_ResolutionWidth - pView->_unknown0x112F4) * pView->m_Width;
+        //    vecScreen->y = (vecScreen->y - pView->_unknown0x112F8) / (pView->m_ResolutionHeight - pView->_unknown0x112F8) * pView->m_Height;
+        //}
+
+        //        #define OFFSET_RENDERER            0x1D3D794 
+        //#define OFFSET_D3D9DEVICE        0x1C226A4 
+
+        //class CRenderer 
+        //{ 
+        //public: 
+        //    char _0x0000[40]; 
+        //    __int32 m_Width; //0x0028  
+        //    __int32 m_Height; //0x002C  
+        //    char _0x0030[108]; 
+        //    D3DXMATRIX m_View; //0x009C  
+        //    D3DXMATRIX m_Projection; //0x00DC 
+
+        //    static LPDIRECT3DDEVICE9 GetDevice( ) 
+        //    { 
+        //        return *( IDirect3DDevice9** )( OFFSET_D3D9DEVICE ); 
+        //    }; 
+
+        //    static CRenderer* GetInstance( void ) 
+        //    { 
+        //        return *( CRenderer** )( OFFSET_RENDERER ); 
+        //    }; 
+
+        //    void WorldToScreen( D3DXVECTOR3* vWorld, D3DXVECTOR3* vScreen ) 
+        //    { 
+        //        // Create identity matrix for the world 
+        //        D3DXMATRIX mWorld; 
+        //        memset( &mWorld, 0, sizeof( mWorld ) ); 
+        //        D3DXMatrixIdentity( &mWorld ); 
+
+        //        // Get view port 
+        //        D3DVIEWPORT9 vp; 
+        //        this->GetDevice( )->GetViewport( &vp ); 
+
+        //        // Project 
+        //        D3DXVec3Project( vScreen, vWorld, &vp, &this->m_Projection, &this->m_View, &mWorld ); 
+
+        //        vScreen->x = ( vScreen->x ) / ( this->m_Width  ) * this->m_Width; 
+        //        vScreen->y = ( vScreen->y ) / ( this->m_Height ) * this->m_Height; 
+        //    }; 
+        //}; 
+
+            // _effect.SetValue("ProjectionMatrix", Matrix.Translation(position.SwitchYZ()) * Drawing.View* Drawing.Projection);
 
         public static bool WorldToScreen(Vector3 vIn, ref Vector2 vOut)
         {
-		    float width = Drawing.Width;
+            float width = Drawing.Width;
+            float height = Drawing.Height;
 
-            Vector3 test = Drawing.Direct3DDevice.Viewport.Project(vIn, Drawing.Projection, Drawing.View, 
+            Vector3 test = Drawing.Direct3DDevice.Viewport.Project(vIn, Drawing.Projection, Drawing.View,
                 SharpDX.Matrix.Identity);
 
             Console.WriteLine(test);
 
             Matrix vProjMatrix = SharpDX.Matrix.Identity * Drawing.View * Drawing.Projection;
 
-		    float height = Drawing.Height;
+            float y =
+                      vProjMatrix[0, 1] * vIn.X +
+                      vProjMatrix[1, 1] * vIn.Y +
+                      vProjMatrix[2, 1] * vIn.Z +
+             vProjMatrix[3, 1];
 
-		    float y =
-                vProjMatrix[0, 1] * vIn.X +
-                vProjMatrix[1, 1] * vIn.Y +
-                vProjMatrix[2, 1] * vIn.Z +
-			    vProjMatrix[3, 1];
+            float x =
+                      vProjMatrix[0, 0] * vIn.X +
+                      vProjMatrix[1, 0] * vIn.Y +
+                      vProjMatrix[2, 0] * vIn.Z +
+             vProjMatrix[3, 0];
 
-		    float x =
-                vProjMatrix[0, 0] * vIn.X +
-                vProjMatrix[1, 0] * vIn.Y +
-                vProjMatrix[2, 0] * vIn.Z +
-			    vProjMatrix[3, 0];
+            float w =
+                      vProjMatrix[0, 3] * vIn.X +
+                      vProjMatrix[1, 3] * vIn.Y +
+                      vProjMatrix[2, 3] * vIn.Z +
+                      vProjMatrix[3, 3];
+            if (w < 0.19)
+            {
+                return false;
+            }
 
-		    float w =
-                vProjMatrix[0, 3] * vIn.X +
-                vProjMatrix[1, 3] * vIn.Y +
-                vProjMatrix[2, 3] * vIn.Z +
-                vProjMatrix[3, 3];
-		    if (w < 0.19)
-		    {
-			    return false;
-		    }
+            vOut.Y = (float)((height * 0.5) - (height * 0.5) * y / w);
+            vOut.X = (float)((width * 0.5) + (width * 0.5) * x / w);
 
-            //vOut.Y = (float)((height*0.5) - (height*0.5) * y / w);
-            //vOut.X = (float)((width*0.5) + (width*0.5) * x / w);
+            //vOut.Y = (float)((test.Y) / (height) * height);
+            //vOut.X = (float)((test.X) / (width) * width);
 
-            vOut.Y = (float)((test.Y) / (height) * height);
-            vOut.X = (float)((test.X) / (width) * width);
+            //vOut.Y = (float)((height * 0.5) - (height * 0.5) * test.Y / w);
+            //vOut.X = (float)((width * 0.5) + (width * 0.5) * test.X / w);
 
-            vOut.Y = (float)((height * 0.5) - (height * 0.5) * test.Y / w);
-            vOut.X = (float)((width * 0.5) + (width * 0.5) * test.X / w);
-
-		    return true;
+            return true;
         }
+
+        //public static bool WorldToScreen(Vector3 vIn, ref Vector2 vOut)
+        //{
+        //    float width = Drawing.Width;
+        //    float height = Drawing.Height;
+        //    Matrix view = Drawing.View;
+        //    Matrix proj = Drawing.Projection;
+
+        //    Vector4 vIn4 = vIn.ToVector4();
+
+        //    Vector4.Transform(ref vIn4, ref view, out vIn4);
+        //    Vector4.Transform(ref vIn4, ref proj, out vIn4);
+
+        //    vOut.X = (vIn.X / vIn4.W + 1) * (width / 2);
+        //    vOut.Y = ((vIn.Y * -1 + 350) / vIn4.W + 1) * (height / 2);
+
+
+
+        //    return true;
+        //}
 
         public static void DrawLine(Vector3 from, Vector3 to, Color color)
         {

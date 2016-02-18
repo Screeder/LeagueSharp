@@ -927,4 +927,7 @@
   <data name="GLOBAL_DRAWING" xml:space="preserve">
     <value>Drawing</value>
   </data>
+  <data name="TRACKERS_UIM_CIRCLE" xml:space="preserve">
+    <value>Circle</value>
+  </data>
 </root>

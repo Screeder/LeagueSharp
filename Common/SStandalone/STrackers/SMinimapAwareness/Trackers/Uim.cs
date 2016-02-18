@@ -12,6 +12,8 @@ using Color = SharpDX.Color;
 
 namespace SAssemblies.Trackers
 {
+    using Color = System.Drawing.Color;
+
     class MinimapAwareness
     {
         public static Menu.MenuItemSettings MinimapAwarenessTracker = new Menu.MenuItemSettings(typeof(MinimapAwareness));
@@ -25,12 +27,14 @@ namespace SAssemblies.Trackers
             Common.ExecuteInOnGameUpdate(() => Init());
             Obj_AI_Base.OnTeleport += Obj_AI_Base_OnTeleport;
             Game.OnUpdate += Game_OnGameUpdate;
+            Drawing.OnEndScene += Drawing_OnEndScene;
         }
 
         ~MinimapAwareness()
         {
             Obj_AI_Base.OnTeleport -= Obj_AI_Base_OnTeleport;
             Game.OnUpdate -= Game_OnGameUpdate;
+            Drawing.OnEndScene -= Drawing_OnEndScene;
             _enemies = null;
         }
 
@@ -51,6 +55,7 @@ namespace SAssemblies.Trackers
                 MinimapAwarenessTracker.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("TRACKERS_UIM_MAIN"), "SAssembliesTrackersUim"));
                 MinimapAwarenessTracker.Menu.AddItem(new MenuItem("SAssembliesTrackersUimScale", Language.GetString("TRACKERS_UIM_SCALE")).SetValue(new Slider(100, 100, 0)));
                 MinimapAwarenessTracker.Menu.AddItem(new MenuItem("SAssembliesTrackersUimShowSS", Language.GetString("TRACKERS_UIM_TIME")).SetValue(false));
+                MinimapAwarenessTracker.Menu.AddItem(new MenuItem("SAssembliesTrackersUimShowCircle", Language.GetString("TRACKERS_UIM_CIRCLE")).SetValue(false));
                 MinimapAwarenessTracker.CreateActiveMenuItem("SAssembliesTrackersUimActive", () => new MinimapAwareness());
             }
             return MinimapAwarenessTracker;
@@ -116,12 +121,42 @@ namespace SAssemblies.Trackers
             return champ;
         }
 
-        void Game_OnGameUpdate(EventArgs args)
+        void Drawing_OnEndScene(EventArgs args)
         {
-            if (!IsActive() || lastGameUpdateTime + new Random().Next(500, 1000) > Environment.TickCount)
+            if (!IsActive())
                 return;
 
-            lastGameUpdateTime = Environment.TickCount;
+            foreach (var enemy in _enemies)
+            {
+                Obj_AI_Hero hero = enemy.Key;
+                if (!hero.IsVisible && !hero.IsDead && enemy.Value.LastPosition != Vector3.Zero && MinimapAwarenessTracker.GetMenuItem("SAssembliesTrackersUimShowCircle").GetValue<bool>())
+                {
+                    float radius = Math.Abs(enemy.Value.LastPosition.X - enemy.Value.PredictedPosition.X);
+                    if (radius < 4000)
+                    {
+                        Utility.DrawCircle(enemy.Value.LastPosition, radius, System.Drawing.Color.Goldenrod, 1, 30, true);
+                        if (enemy.Value.LastPosition.IsOnScreen())
+                        {
+                            Utility.DrawCircle(enemy.Value.LastPosition, radius, System.Drawing.Color.Goldenrod);
+                        }
+                    }
+                    else if (radius >= 4000)
+                    {
+                        radius = 4000;
+                        Utility.DrawCircle(enemy.Value.LastPosition, radius, System.Drawing.Color.Goldenrod, 1, 30, true);
+                        if (enemy.Value.LastPosition.IsOnScreen())
+                        {
+                            Utility.DrawCircle(enemy.Value.LastPosition, radius, System.Drawing.Color.Goldenrod);
+                        }
+                    }
+                }
+            }
+        }
+
+        void Game_OnGameUpdate(EventArgs args)
+        {
+            if (!IsActive())
+                return;
 
             float percentScale = (float)MinimapAwarenessTracker.GetMenuItem("SAssembliesTrackersUimScale").GetValue<Slider>().Value / 100;
             foreach (var enemy in _enemies)
@@ -147,7 +182,7 @@ namespace SAssemblies.Trackers
                     };
                     enemy.Value.SpriteInfo.Sprite.VisibleCondition = delegate
                     {
-                        return IsActive() && !enemy.Key.IsVisible;
+                        return IsActive() && !enemy.Key.IsVisible && enemy.Value.LastPosition != Vector3.Zero;
                     };
                     enemy.Value.SpriteInfo.Sprite.Add(0);
                     enemy.Value.SpriteInfo.LoadingFinished = true;
@@ -207,12 +242,24 @@ namespace SAssemblies.Trackers
             public Packet.S2C.Teleport.Struct RecallInfo;
             public SsTimer Timer;
             public Vector3 LastPosition;
+            public Vector3 PredictedPosition;
             public String Name;
 
             public InternalMinimapTracker(Obj_AI_Hero hero)
             {
                 Hero = hero;
                 Timer = new SsTimer(Hero);
+                Game.OnUpdate += Game_OnGameUpdate;
+            }
+
+            ~InternalMinimapTracker()
+            {
+                Game.OnUpdate -= Game_OnGameUpdate;
+            }
+
+            private void Game_OnGameUpdate(EventArgs args)
+            {
+                PredictedPosition = new Vector3(LastPosition.X + ((Game.ClockTime - Timer.VisibleTime) * Hero.MoveSpeed), LastPosition.Y, LastPosition.Z);
             }
         }
 
