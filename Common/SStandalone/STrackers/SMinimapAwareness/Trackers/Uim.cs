@@ -55,6 +55,7 @@ namespace SAssemblies.Trackers
                 MinimapAwarenessTracker.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("TRACKERS_UIM_MAIN"), "SAssembliesTrackersUim"));
                 MinimapAwarenessTracker.Menu.AddItem(new MenuItem("SAssembliesTrackersUimScale", Language.GetString("TRACKERS_UIM_SCALE")).SetValue(new Slider(100, 100, 0)));
                 MinimapAwarenessTracker.Menu.AddItem(new MenuItem("SAssembliesTrackersUimShowSS", Language.GetString("TRACKERS_UIM_TIME")).SetValue(false));
+                MinimapAwarenessTracker.Menu.AddItem(new MenuItem("SAssembliesTrackersUimShowCircleRange", Language.GetString("TRACKERS_UIM_CIRCLE_RANGE")).SetValue(new Slider(2000, 15000, 100)));
                 MinimapAwarenessTracker.Menu.AddItem(new MenuItem("SAssembliesTrackersUimShowCircle", Language.GetString("TRACKERS_UIM_CIRCLE")).SetValue(false));
                 MinimapAwarenessTracker.CreateActiveMenuItem("SAssembliesTrackersUimActive", () => new MinimapAwareness());
             }
@@ -132,7 +133,7 @@ namespace SAssemblies.Trackers
                 if (!hero.IsVisible && !hero.IsDead && enemy.Value.LastPosition != Vector3.Zero && MinimapAwarenessTracker.GetMenuItem("SAssembliesTrackersUimShowCircle").GetValue<bool>())
                 {
                     float radius = Math.Abs(enemy.Value.LastPosition.X - enemy.Value.PredictedPosition.X);
-                    if (radius < 4000)
+                    if (radius < MinimapAwarenessTracker.GetMenuItem("SAssembliesTrackersUimShowCircleRange").GetValue<Slider>().Value)
                     {
                         Utility.DrawCircle(enemy.Value.LastPosition, radius, System.Drawing.Color.Goldenrod, 1, 30, true);
                         if (enemy.Value.LastPosition.IsOnScreen())
@@ -140,9 +141,9 @@ namespace SAssemblies.Trackers
                             Utility.DrawCircle(enemy.Value.LastPosition, radius, System.Drawing.Color.Goldenrod);
                         }
                     }
-                    else if (radius >= 4000)
+                    else if (radius >= MinimapAwarenessTracker.GetMenuItem("SAssembliesTrackersUimShowCircleRange").GetValue<Slider>().Value)
                     {
-                        radius = 4000;
+                        radius = MinimapAwarenessTracker.GetMenuItem("SAssembliesTrackersUimShowCircleRange").GetValue<Slider>().Value;
                         Utility.DrawCircle(enemy.Value.LastPosition, radius, System.Drawing.Color.Goldenrod, 1, 30, true);
                         if (enemy.Value.LastPosition.IsOnScreen())
                         {
@@ -161,10 +162,11 @@ namespace SAssemblies.Trackers
             float percentScale = (float)MinimapAwarenessTracker.GetMenuItem("SAssembliesTrackersUimScale").GetValue<Slider>().Value / 100;
             foreach (var enemy in _enemies)
             {
-                if (enemy.Key.IsVisible)
-                {
-                    enemy.Value.LastPosition = enemy.Key.ServerPosition;
-                }
+                //if (enemy.Key.IsVisible)
+                //{
+                //    enemy.Value.LastPosition = enemy.Key.ServerPosition;
+                //}
+                enemy.Value.LastPosition = enemy.Key.ServerPosition;
                 if (enemy.Value.SpriteInfo == null || enemy.Value.SpriteInfo.Sprite == null)
                 {
                     SpriteHelper.LoadTexture(enemy.Value.Name, ref enemy.Value.SpriteInfo, "UIM");
@@ -260,6 +262,10 @@ namespace SAssemblies.Trackers
             private void Game_OnGameUpdate(EventArgs args)
             {
                 PredictedPosition = new Vector3(LastPosition.X + ((Game.ClockTime - Timer.VisibleTime) * Hero.MoveSpeed), LastPosition.Y, LastPosition.Z);
+                if (Hero.IsVisible)
+                {
+                    Timer.Active = true;
+                }
             }
         }
 
@@ -268,6 +274,7 @@ namespace SAssemblies.Trackers
             public int InvisibleTime;
             public int VisibleTime;
             public Obj_AI_Hero Hero;
+            public bool Active = false;
 
             public SsTimer(Obj_AI_Hero hero)
             {
@@ -283,6 +290,10 @@ namespace SAssemblies.Trackers
 
             private void Game_OnGameUpdate(EventArgs args)
             {
+                if (!Active)
+                {
+                    return;
+                }
                 if (Hero.IsVisible)
                 {
                     InvisibleTime = 0;
