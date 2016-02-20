@@ -930,4 +930,7 @@
   <data name="TRACKERS_UIM_CIRCLE" xml:space="preserve">
     <value>Circle</value>
   </data>
+  <data name="TRACKERS_UIM_CIRCLE_RANGE" xml:space="preserve">
+    <value>Max Circle Range</value>
+  </data>
 </root>
