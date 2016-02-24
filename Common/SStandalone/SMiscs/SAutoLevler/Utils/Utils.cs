@@ -3076,7 +3076,7 @@ namespace SAssemblies
 
     static class PacketCatcher
     {
-        private static List<byte> exclude = new List<byte>() {  };
+        private static List<byte> exclude = new List<byte>() { 229, 15, 85, 117, 239, 76, 32, 82, 254, 10, 63, 36, 241, 214, 49, 47, 163, 21, 88, 31, 0, 33, 161, 22, 77, 66, 232, 160, 230, 227, 34, 30, 162, 187, };
         private static List<byte> list = new List<byte>() { }; 
 
         public static void Init()
@@ -3086,8 +3086,10 @@ namespace SAssemblies
                 if (!list.Contains(eventArgs.PacketData[0]) && !exclude.Contains(eventArgs.PacketData[0]))
                 {
                     list.Add(eventArgs.PacketData[0]);
-                    Console.Write("Got Packet: " + eventArgs.PacketData[0] + "; Length: " + eventArgs.PacketData.Length + "; ");
+                    Console.Write("Got Packet: " + eventArgs.PacketData[0] + " (" + eventArgs.PacketData[0].ToString("X") + "); Length: " + eventArgs.PacketData.Length + "; ");
                     Array.ForEach(eventArgs.PacketData, x => Console.Write(x + " "));
+                    Console.WriteLine();
+                    Array.ForEach(eventArgs.PacketData, x => Console.Write(x.ToString("X") + " "));
                     Console.WriteLine();
                 }
             };
