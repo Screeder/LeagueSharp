@@ -174,7 +174,6 @@ namespace SAssemblies.Miscs
             };
             this.MainFrame.Add(2);
             MainBitmap.SetOriginalBitmap(MainBitmap.Bitmap);
-            MainBitmap.ResetBitmap();
         }
 
         void CurrentDomain_DomainUnload(object sender, EventArgs e)
@@ -192,10 +191,8 @@ namespace SAssemblies.Miscs
 
         private void Obj_AI_Hero_OnLevelUp(Obj_AI_Base sender, EventArgs args)
         {
-            Console.WriteLine("Levelup: " + Game.Time);
             if (sender.IsMe)
             {
-                Console.WriteLine("LevelupMe: "+ Game.Time);
                 lastLevelUpTime = (int)Game.Time;
             }
         }
@@ -906,7 +903,7 @@ namespace SAssemblies.Miscs
                 }
 
                 List<String> matchesLane = new List<string>();
-                String patternUrl = "<a href=\"/champion/Ryze/(.*?)\">";
+                String patternUrl = "<a href=\"/champion/" + ObjectManager.Player.ChampionName + "/(.*?)\">";
 
                 for (int i = 0; ; i++)
                 {
