@@ -104,7 +104,6 @@ namespace SAssemblies.Miscs
                 return IsActive();
             };
             this.MainFrame.Add(4);
-            MainBitmap.ResetBitmap();
         }
 
         void Game_OnWndProc(WndEventArgs args)
