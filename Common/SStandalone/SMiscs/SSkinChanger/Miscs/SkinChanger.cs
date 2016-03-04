@@ -42,8 +42,8 @@ namespace SAssemblies.Miscs
             Obj_AI_Base.OnCreate += Obj_AI_Base_OnCreate;
             new Thread(LoadSpritesAsync).Start();
             SkinChangerMisc.GetMenuItem("SAssembliesMiscsSkinChangerSkinName" + ObjectManager.Player.ChampionName).ValueChanged += SkinChanger_ValueChanged;
-            SkinChangerMisc.GetMenuItem("SAssembliesMiscsSkinChangerSkinNameLoading").ValueChanged += SkinChanger_PicValueChanged;
-            SkinChangerMisc.GetMenuItem("SAssembliesMiscsSkinChangerSkinNameSplash").ValueChanged += SkinChanger_PicValueChanged;
+            SkinChangerMisc.GetMenuItem("SAssembliesMiscsSkinChangerSkinNameLoadingButton").ValueChanged += SkinChanger_PicValueChanged;
+            SkinChangerMisc.GetMenuItem("SAssembliesMiscsSkinChangerSkinNameSplashButton").ValueChanged += SkinChanger_PicValueChanged;
             SkinChangerMisc.GetMenuItem("SAssembliesMiscsSkinChangerActive" + ObjectManager.Player.ChampionName).ValueChanged +=
                 (sender, args) =>
                     {
@@ -79,8 +79,8 @@ namespace SAssemblies.Miscs
             {
                 SkinChangerMisc.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("MISCS_SKINCHANGER_MAIN"), "SAssembliesMiscsSkinChanger"));
                 SkinChangerMisc.Menu.AddItem(new MenuItem("SAssembliesMiscsSkinChangerSkinName" + ObjectManager.Player.ChampionName, Language.GetString("MISCS_SKINCHANGER_SKIN")).SetValue(new StringList(GetSkins().ToArray())));
-                SkinChangerMisc.Menu.AddItem(new MenuItem("SAssembliesMiscsSkinChangerSkinNameLoading", Language.GetString("MISCS_SKINCHANGER_SKIN_LOADING")).SetValue(false));
-                SkinChangerMisc.Menu.AddItem(new MenuItem("SAssembliesMiscsSkinChangerSkinNameSplash", Language.GetString("MISCS_SKINCHANGER_SKIN_SPLASH")).SetValue(false));
+                SkinChangerMisc.Menu.AddItem(new MenuItem("SAssembliesMiscsSkinChangerSkinNameLoadingButton", Language.GetString("MISCS_SKINCHANGER_SKIN_LOADING")).SetValue(new KeyBind(85, KeyBindType.Toggle)));
+                SkinChangerMisc.Menu.AddItem(new MenuItem("SAssembliesMiscsSkinChangerSkinNameSplashButton", Language.GetString("MISCS_SKINCHANGER_SKIN_SPLASH")).SetValue(new KeyBind(85, KeyBindType.Toggle)));
                 SkinChangerMisc.CreateActiveMenuItem("SAssembliesMiscsSkinChangerActive" + ObjectManager.Player.ChampionName, () => new SkinChanger());
             }
             return SkinChangerMisc;
@@ -117,7 +117,7 @@ namespace SAssemblies.Miscs
 
         private void HandleInput(WindowsMessages message, Vector2 cursorPos, uint key)
         {
-            if (message != WindowsMessages.WM_LBUTTONDOWN || !SkinChangerMisc.GetMenuItem("SAssembliesMiscsSkinChangerSkinNameLoading").GetValue<bool>())
+            if (message != WindowsMessages.WM_LBUTTONDOWN || !SkinChangerMisc.GetMenuItem("SAssembliesMiscsSkinChangerSkinNameLoadingButton").GetValue<KeyBind>().Active)
             {
                 return;
             }
@@ -203,7 +203,6 @@ namespace SAssemblies.Miscs
         private void FinishedLoading()
         {
             UpdateBitmap();
-            Console.WriteLine("Complete: " + FinishedLoadingComplete);
             FinishedLoadingComplete = true;
         }
 
@@ -224,12 +223,12 @@ namespace SAssemblies.Miscs
                     - ChampSkinGUI.ChampSkins[currentId].SpriteInfoSmall.Bitmap.Width / 2,
                     ChampSkinGUI.ChampSkins[currentId].SpriteInfoBig.Bitmap.Height
                     - ChampSkinGUI.ChampSkins[currentId].SpriteInfoSmall.Bitmap.Height);
-            if (SkinChangerMisc.GetMenuItem("SAssembliesMiscsSkinChangerSkinNameLoading").GetValue<bool>()
-                || SkinChangerMisc.GetMenuItem("SAssembliesMiscsSkinChangerSkinNameSplash").GetValue<bool>())
+            if (SkinChangerMisc.GetMenuItem("SAssembliesMiscsSkinChangerSkinNameLoadingButton").GetValue<KeyBind>().Active
+                || SkinChangerMisc.GetMenuItem("SAssembliesMiscsSkinChangerSkinNameSplashButton").GetValue<KeyBind>().Active)
             {
                 MainBitmap.AddText(currentName, new System.Drawing.Point(MainBitmap.Bitmap.Width / 2 - size.Width / 2, 0), Brushes.Orange);
             }
-            if (SkinChangerMisc.GetMenuItem("SAssembliesMiscsSkinChangerSkinNameSplash").GetValue<bool>())
+            if (SkinChangerMisc.GetMenuItem("SAssembliesMiscsSkinChangerSkinNameSplashButton").GetValue<KeyBind>().Active)
             {
                 MainBitmap.AddColoredRectangle(
                     new System.Drawing.Point(0, 20),
@@ -238,7 +237,7 @@ namespace SAssemblies.Miscs
                     Color.Black, 230);
                 MainBitmap.AddBitmap(ChampSkinGUI.ChampSkins[currentId].SpriteInfoBig.Bitmap, new System.Drawing.Point(0, 20));
             }
-            if (SkinChangerMisc.GetMenuItem("SAssembliesMiscsSkinChangerSkinNameLoading").GetValue<bool>())
+            if (SkinChangerMisc.GetMenuItem("SAssembliesMiscsSkinChangerSkinNameLoadingButton").GetValue<KeyBind>().Active)
             {
                 MainBitmap.AddColoredRectangle(
                     pos,
@@ -258,7 +257,7 @@ namespace SAssemblies.Miscs
 
         private void AddOtherSkins(int currentId = -1)
         {
-            if (!SkinChangerMisc.GetMenuItem("SAssembliesMiscsSkinChangerSkinNameLoading").GetValue<bool>())
+            if (!SkinChangerMisc.GetMenuItem("SAssembliesMiscsSkinChangerSkinNameLoadingButton").GetValue<KeyBind>().Active)
                 return;
 
             ChampSkin[] ChampSkins = ChampSkinGUI.ChampSkins;
