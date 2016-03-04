@@ -76,7 +76,7 @@ namespace SAssemblies.Detectors
             {
                 return IsActive() && _recalls.Any(x => x.Recall.Status == Packet.S2C.Teleport.Status.Start && (x.Recall.Start + x.Recall.Duration - Environment.TickCount) > 0);
             };
-            rec.Add();
+            rec.Add(0);
         }
 
         private void Obj_AI_Base_OnTeleport(GameObject sender, GameObjectTeleportEventArgs args)
@@ -272,7 +272,7 @@ namespace SAssemblies.Detectors
                     }
                     return IsActive() && Recall.Status == Packet.S2C.Teleport.Status.Start && (Recall.Start + Recall.Duration - Environment.TickCount) > 0;
                 };
-                Line.Add();
+                Line.Add(1);
                 Text = new Render.Text(ObjectManager.GetUnitByNetworkId<Obj_AI_Hero>(Recall.UnitNetworkId).ChampionName, 0 ,0, 18, SharpDX.Color.WhiteSmoke);
                 Text.PositionUpdate += delegate
                 {
@@ -292,7 +292,7 @@ namespace SAssemblies.Detectors
                 {
                     return IsActive() && Recall.Status == Packet.S2C.Teleport.Status.Start && (Recall.Start + Recall.Duration - Environment.TickCount) > 0;
                 };
-                Text.Add();
+                Text.Add(1);
                 Text2 = new Render.Text(ObjectManager.GetUnitByNetworkId<Obj_AI_Hero>(Recall.UnitNetworkId).ChampionName, 0, 0, 18, SharpDX.Color.WhiteSmoke);
                 Text2.PositionUpdate += delegate
                 {
@@ -313,7 +313,7 @@ namespace SAssemblies.Detectors
                 {
                     return IsActive() && Recall.Status == Packet.S2C.Teleport.Status.Start && (Recall.Start + Recall.Duration - Environment.TickCount) > 0;
                 };
-                Text2.Add();
+                Text2.Add(1);
             }
 
             public float RecallStatusPercent()
