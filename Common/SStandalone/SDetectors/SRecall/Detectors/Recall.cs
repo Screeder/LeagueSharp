@@ -74,7 +74,7 @@ namespace SAssemblies.Detectors
             Render.Rectangle rec = new Render.Rectangle(Drawing.Width / 2 - 200 / 2, (int)(Drawing.Height / 1.5f), 200, 10, SharpDX.Color.Black);
             rec.VisibleCondition = delegate
             {
-                return IsActive() && _recalls.Any(x => x.Recall.Status == Packet.S2C.Teleport.Status.Start);
+                return IsActive() && _recalls.Any(x => x.Recall.Status == Packet.S2C.Teleport.Status.Start && (x.Recall.Start + x.Recall.Duration - Environment.TickCount) > 0);
             };
             rec.Add();
         }
@@ -225,6 +225,7 @@ namespace SAssemblies.Detectors
         {
             public Render.Rectangle Rectangle;
             public Render.Text Text;
+            public Render.Text Text2;
             public Render.Line Line;
             public Packet.S2C.Teleport.Struct Recall;
 
@@ -250,7 +251,7 @@ namespace SAssemblies.Detectors
                 };
                 Rectangle.VisibleCondition = delegate
                 {
-                    return IsActive() && Recall.Status == Packet.S2C.Teleport.Status.Start;
+                    return IsActive() && Recall.Status == Packet.S2C.Teleport.Status.Start && (Recall.Start + Recall.Duration - Environment.TickCount) > 0;
                 };
                 Rectangle.Add(1);
                 Line = new Render.Line(new Vector2(0, 0), new Vector2(0, 0), 1, SharpDX.Color.WhiteSmoke);
@@ -269,7 +270,7 @@ namespace SAssemblies.Detectors
                     {
                         Line.Color = newCol;
                     }
-                    return IsActive() && Recall.Status == Packet.S2C.Teleport.Status.Start;
+                    return IsActive() && Recall.Status == Packet.S2C.Teleport.Status.Start && (Recall.Start + Recall.Duration - Environment.TickCount) > 0;
                 };
                 Line.Add();
                 Text = new Render.Text(ObjectManager.GetUnitByNetworkId<Obj_AI_Hero>(Recall.UnitNetworkId).ChampionName, 0 ,0, 18, SharpDX.Color.WhiteSmoke);
@@ -284,16 +285,35 @@ namespace SAssemblies.Detectors
                     {
                         Text.Color = newCol;
                     }
-                    TimeSpan t = TimeSpan.FromMilliseconds(Recall.Start + Recall.Duration - Environment.TickCount);
-                    string time = string.Format("{0:D2},{1:D2}", t.Seconds, t.Milliseconds);
-                    return ObjectManager.GetUnitByNetworkId<Obj_AI_Hero>(Recall.UnitNetworkId).ChampionName + "\n" + time;
+                    return ObjectManager.GetUnitByNetworkId<Obj_AI_Hero>(Recall.UnitNetworkId).ChampionName;
                 };
                 Text.Centered = true;
                 Text.VisibleCondition = delegate
                 {
-                    return IsActive() && Recall.Status == Packet.S2C.Teleport.Status.Start;
+                    return IsActive() && Recall.Status == Packet.S2C.Teleport.Status.Start && (Recall.Start + Recall.Duration - Environment.TickCount) > 0;
                 };
                 Text.Add();
+                Text2 = new Render.Text(ObjectManager.GetUnitByNetworkId<Obj_AI_Hero>(Recall.UnitNetworkId).ChampionName, 0, 0, 18, SharpDX.Color.WhiteSmoke);
+                Text2.PositionUpdate += delegate
+                {
+                    return new Vector2(Line.Start.X, Line.Start.Y - 5);
+                };
+                Text2.TextUpdate = delegate
+                {
+                    SharpDX.Color newCol = new SharpDX.Color(255, 255, 255, (int)(255 - (150 * RecallStatusPercent())));
+                    if (!Equals(newCol, Text2.Color))
+                    {
+                        Text2.Color = newCol;
+                    }
+                    TimeSpan t = TimeSpan.FromMilliseconds(Recall.Start + Recall.Duration - Environment.TickCount);
+                    return string.Format("{0}.{1}", t.Seconds, t.Milliseconds.ToString("D3").Remove(1, 2));
+                };
+                Text2.Centered = true;
+                Text2.VisibleCondition = delegate
+                {
+                    return IsActive() && Recall.Status == Packet.S2C.Teleport.Status.Start && (Recall.Start + Recall.Duration - Environment.TickCount) > 0;
+                };
+                Text2.Add();
             }
 
             public float RecallStatusPercent()
