@@ -933,4 +933,7 @@
   <data name="TRACKERS_UIM_CIRCLE_RANGE" xml:space="preserve">
     <value>Max Circle Range</value>
   </data>
+  <data name="TIMERS_EXECUTE_MAIN" xml:space="preserve">
+    <value>Execute</value>
+  </data>
 </root>
