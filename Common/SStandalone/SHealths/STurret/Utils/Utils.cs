@@ -49,7 +49,7 @@ namespace SAssemblies
     using Notification = LeagueSharp.Common.Notification;
     using Notifications = LeagueSharp.Common.Notifications;
 
-    class Menu
+    public class Menu
     {
         public static MenuItemSettings GlobalSettings = new MenuItemSettings();
 
@@ -213,7 +213,7 @@ namespace SAssemblies
         }
     }
 
-    class Menu2
+    public class Menu2
     {
         protected Dictionary<MenuItemSettings, Func<dynamic>> MenuEntries;
         public static MenuItemSettings GlobalSettings = new MenuItemSettings();
@@ -394,7 +394,7 @@ namespace SAssemblies
         //public static MenuItemSettings  = new MenuItemSettings();
     }
 
-    internal static class Log
+    public static class Log
     {
         public static String File = "C:\\SAssemblies.log";
         public static String Prefix = "Packet";
@@ -448,7 +448,7 @@ namespace SAssemblies
         }
     }
 
-    internal static class Common
+    public static class Common
     {
         public static bool IsOnScreen(Vector3 vector)
         {
@@ -543,7 +543,7 @@ namespace SAssemblies
         }
     }
 
-    internal static class SummonerSpells
+    public static class SummonerSpells
     {
         public static SpellSlot GetIgniteSlot()
         {
@@ -626,7 +626,7 @@ namespace SAssemblies
         }
     }
 
-    internal class Downloader
+    public class Downloader
     {
         public delegate void DownloadFinished(object sender, DlEventArgs args);
 
@@ -1794,7 +1794,7 @@ namespace SAssemblies
     }
 
     [PermissionSet(SecurityAction.Assert, Unrestricted = true)]
-    internal static class Speech
+    public static class Speech
     {
         private static Dictionary<int, SpeechSynthesizer> tts = new Dictionary<int, SpeechSynthesizer>();
 
@@ -1868,7 +1868,7 @@ namespace SAssemblies
         }
     }
 
-    internal class Ward
+    public class Ward
     {
         public enum WardType
         {
@@ -1946,7 +1946,7 @@ namespace SAssemblies
         }
     }
 
-    internal static class DirectXDrawer
+    public static class DirectXDrawer
     {
         public static void InternalRender(Vector3 target)
         {
@@ -2239,7 +2239,7 @@ namespace SAssemblies
         }
     }
 
-    static class MapPositions
+    public static class MapPositions
     {
 
         public enum Region
@@ -2678,7 +2678,7 @@ namespace SAssemblies
 
     }
 
-    static class ThreadHelper
+    public static class ThreadHelper
     {
 
         static ThreadEventHelper[] _threadHelpers = new ThreadEventHelper[10];
@@ -2746,7 +2746,7 @@ namespace SAssemblies
         }
     }
 
-    static class AssemblyResolver
+    public static class AssemblyResolver
     {
         private static Assembly evadeAssembly;
         private static Assembly jsonAssembly;
@@ -2946,7 +2946,7 @@ namespace SAssemblies
         }
     }
 
-    static class Language
+    public static class Language
     {
 
         private static System.Resources.ResourceManager resMgr;
@@ -2962,8 +2962,24 @@ namespace SAssemblies
             }
             catch (Exception)
             {
-                resMgr = new System.Resources.ResourceManager(assembly + ".Resources.TRANSLATIONS.Translation-en-US", Assembly.GetExecutingAssembly());
-                resMgrAlt = resMgr;
+                try
+                {
+                    resMgr = new System.Resources.ResourceManager(assembly + ".Resources.TRANSLATIONS.Translation-en-US", Assembly.GetExecutingAssembly());
+                    resMgrAlt = resMgr;
+                }
+                catch (Exception)
+                {
+                    try
+                    {
+                        resMgr = new System.Resources.ResourceManager("SAssembliesLib.Resources.TRANSLATIONS.Translation-" + langID, Assembly.GetExecutingAssembly());
+                        resMgrAlt = new System.Resources.ResourceManager("SAssembliesLib.Resources.TRANSLATIONS.Translation-en-US", Assembly.GetExecutingAssembly());
+                    }
+                    catch (Exception)
+                    {
+                        resMgr = new System.Resources.ResourceManager("SAssembliesLib.Resources.TRANSLATIONS.Translation-en-US", Assembly.GetExecutingAssembly());
+                        resMgrAlt = resMgr;
+                    }
+                }
             }
         }
  
@@ -3074,7 +3090,7 @@ namespace SAssemblies
         }
     }
 
-    static class PacketCatcher
+    public static class PacketCatcher
     {
         private static List<byte> exclude = new List<byte>() { 61, 238, 167, 25, 41, 253, 121, 165, 154, 69, 233, 24, 7, 58, 97, 14, 128, 112, 109, 70, 145, 8, 188, 116, 191, 89, 67, 244, 44, 215, 26, 83, 103, 217, 64, 145, 25, 26, 70, 89, 24, 179, 11, 167, 253, 133, 67, 99, 128, 233, 58, 97, 28, 163, 76, 56, 117, 63, 47, };
         private static List<byte> list = new List<byte>() { }; 

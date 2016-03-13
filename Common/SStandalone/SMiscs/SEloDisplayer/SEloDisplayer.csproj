@@ -55,6 +55,9 @@
     <Reference Include="Newtonsoft.Json">
       <HintPath>D:\Spiele\Riot Games\LeagueSharp\System\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="SAssembliesLib">
+      <HintPath>D:\Spiele\Riot Games\LeagueSharp\System\SAssembliesLib.dll</HintPath>
+    </Reference>
     <Reference Include="SharpDX">
       <HintPath>D:\Spiele\Riot Games\LeagueSharp\System\SharpDX.dll</HintPath>
     </Reference>
@@ -87,8 +90,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>EloDisplayer.resx</DependentUpon>
     </Compile>
-    <Compile Include="Utils\Database.cs" />
-    <Compile Include="Utils\Utils.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -98,9 +99,6 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>EloDisplayer.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Resources\TRANSLATIONS\Translation-de-DE.resx" />
-    <EmbeddedResource Include="Resources\TRANSLATIONS\Translation-en-US.resx" />
-    <EmbeddedResource Include="Resources\TRANSLATIONS\Translation-fr-FR.resx" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\SPRITES\EloDisplayer\EloGui.png" />
