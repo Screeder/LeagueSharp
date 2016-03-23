@@ -261,6 +261,7 @@ namespace SAssemblies.Miscs
             if (sender is Obj_AI_Hero)
             {
                 var hero = (Obj_AI_Hero)sender;
+                Console.WriteLine(args.Animation);
                 if (hero.Team != ObjectManager.Player.Team)
                 {
                     if (IsJumping(hero, args.Animation))
@@ -302,6 +303,11 @@ namespace SAssemblies.Miscs
                         break;
 
                     case "Khazix":
+                        if (animation.Contains("Spell3"))
+                            return true;
+                        break;
+
+                    case "Zac":
                         if (animation.Contains("Spell3"))
                             return true;
                         break;
