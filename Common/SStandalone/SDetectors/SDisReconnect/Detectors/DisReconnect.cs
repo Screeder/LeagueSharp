@@ -138,7 +138,7 @@ namespace SAssemblies.Detectors
                 }
                 if (Game.Version.Contains("6.6"))
                 {
-                    packet = 54;
+                    packet = 86;
                 }
                 if (packetId != packet) //Length 7
                     return;
