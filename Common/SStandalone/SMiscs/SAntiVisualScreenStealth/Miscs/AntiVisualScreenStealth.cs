@@ -94,6 +94,10 @@ namespace SAssemblies.Miscs
             {
                 packetIds.Add(242);
             }
+            if (Game.Version.Contains("6.6"))
+            {
+                packetIds.Add(31);
+            }
             foreach (int id in packetIds)
             {
                 if (packetId == id)
