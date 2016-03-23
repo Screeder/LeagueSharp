@@ -180,7 +180,7 @@ namespace SAssemblies.Timers
                 TextMap.TextFontDescription = new FontDescription
                 {
                     FaceName = "Calibri",
-                    Height = e.GetNewValue<Slider>().Value,
+                    Height = (int)(e.GetNewValue<Slider>().Value * 3.5),
                     OutputPrecision = FontPrecision.Default,
                     Quality = FontQuality.Default,
                 };
