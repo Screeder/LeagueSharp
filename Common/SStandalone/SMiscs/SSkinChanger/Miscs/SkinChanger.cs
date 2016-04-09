@@ -14,6 +14,7 @@ using SharpDX;
 namespace SAssemblies.Miscs
 {
     using System.Drawing;
+    using System.Security.Permissions;
     using System.Windows.Forms;
 
     using Menu = SAssemblies.Menu;
@@ -369,6 +370,7 @@ namespace SAssemblies.Miscs
             }
         }
 
+        [PermissionSet(SecurityAction.Assert, Unrestricted = true)]
         private static List<String> GetSkins()
         {
             if (_skins.Count != 0)
