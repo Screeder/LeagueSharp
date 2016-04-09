@@ -3092,7 +3092,7 @@ namespace SAssemblies
 
     public static class PacketCatcher
     {
-        private static List<byte> exclude = new List<byte>() { 236, 37, 145, 239, 158, 70, 156, 55, 79, 51, 18, 21, 242, 67, 154, 71, 95, 83, 214, 39, 166, 139, 142, 46, 40, 137, 209, };
+        private static List<byte> exclude = new List<byte>() { 46, 19, 178, 38, 47, 24, 4, 100, 86, 193, 74, 92, 36, 237, 23, 245, 118, 91, 114, 160, 21, 108, 150, 99, 169, 32, 229, 104, };
         private static List<byte> list = new List<byte>() { }; 
 
         public static void Init()
