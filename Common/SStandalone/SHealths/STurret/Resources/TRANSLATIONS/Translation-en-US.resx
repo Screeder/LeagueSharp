@@ -936,4 +936,7 @@
   <data name="TIMERS_EXECUTE_MAIN" xml:space="preserve">
     <value>Execute</value>
   </data>
+  <data name="TIMERS_ASCENSION_MAIN" xml:space="preserve">
+    <value>Ascension</value>
+  </data>
 </root>
