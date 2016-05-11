@@ -751,7 +751,7 @@ namespace SAssemblies
 
         static SpriteHelper()
         {
-            Assembly assembly = Assembly.GetExecutingAssembly();
+            Assembly assembly = Assembly.GetCallingAssembly();
             List<String> resources = new List<string>() { ".Resources.SPRITES.AutoBuy.AutoBuy", ".Resources.SPRITES.AutoLevler.AutoLevler",
                 ".Resources.SPRITES.EloDisplayer.EloDisplayer", ".Resources.SPRITES.SmartPing.SmartPing", ".Resources.SPRITES.Ui.Ui" };
             foreach (string resource in resources)
@@ -3092,7 +3092,7 @@ namespace SAssemblies
 
     public static class PacketCatcher
     {
-        private static List<byte> exclude = new List<byte>() { 153, 217, 124, 45, 89, 25, 191, 247, 157, 164, 219, 60, 22, 144, 71, 198, 59, 48, 111, 230, 77, 117, 42, 170, 98, };
+        private static List<byte> exclude = new List<byte>() { 127, 20, 12, 118, 241, 171, 194, 33, 103, 219, 139, 102, 3, 132, 136, 67, 224, 254, 101, 0, 212, 28, 234, 63, 41, 45, 218, 162, 143, 99, 170, 239, 16, 220, 78, 111, 93, 134, };
         private static List<byte> list = new List<byte>() { }; 
 
         public static void Init()
