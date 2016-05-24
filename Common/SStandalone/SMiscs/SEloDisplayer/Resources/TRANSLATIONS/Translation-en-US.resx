@@ -939,4 +939,16 @@
   <data name="TIMERS_ASCENSION_MAIN" xml:space="preserve">
     <value>Ascension</value>
   </data>
+  <data name="MISCS_LANEPOWER_ANIMATION" xml:space="preserve">
+    <value>Show Animation</value>
+  </data>
+  <data name="MISCS_LANEPOWER_MAIN" xml:space="preserve">
+    <value>Lane Power</value>
+  </data>
+  <data name="MISCS_LANEPOWER_POSITION_X" xml:space="preserve">
+    <value>Position X</value>
+  </data>
+  <data name="MISCS_LANEPOWER_POSITION_Y" xml:space="preserve">
+    <value>Position Y</value>
+  </data>
 </root>
