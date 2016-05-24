@@ -54,6 +54,10 @@
     <Reference Include="Newtonsoft.Json">
       <HintPath>D:\Spiele\Riot Games\LeagueSharp\System\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="SAssembliesLib, Version=1.0.6.10, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\SAssembliesLib\bin\Debug\SAssembliesLib.dll</HintPath>
+    </Reference>
     <Reference Include="SharpDX">
       <HintPath>D:\Spiele\Riot Games\LeagueSharp\System\SharpDX.dll</HintPath>
     </Reference>
@@ -84,12 +88,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\SAssembliesLib\SAssembliesLib.csproj">
-      <Project>{e8907687-6df5-4563-b73a-6f7c7ff37e3e}</Project>
-      <Name>SAssembliesLib</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
