@@ -55,6 +55,8 @@ namespace SAssemblies.Miscs
 
         private List<Obj_AI_Hero> heroes = new List<Obj_AI_Hero>();
 
+        private Render.Text lowHpHero;
+
         private Dictionary<Lane, DrawingsClass> drawings = new Dictionary<Lane, DrawingsClass>();
 
         private bool moveActive = false;
@@ -160,6 +162,7 @@ namespace SAssemblies.Miscs
             {
                 LanePowerMisc.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("MISCS_LANEPOWER_MAIN"), "SAssembliesMiscsLanePower"));
                 LanePowerMisc.Menu.AddItem(new MenuItem("SAssembliesMiscsLanePowerShowAnimation", Language.GetString("MISCS_LANEPOWER_ANIMATION")).SetValue(true));
+                LanePowerMisc.Menu.AddItem(new MenuItem("SAssembliesMiscsLanePowerShowLowHP", Language.GetString("MISCS_LANEPOWER_LOWHP")).SetValue(true));
                 LanePowerMisc.Menu.AddItem(new MenuItem("SAssembliesMiscsLanePowerPositionX", Language.GetString("MISCS_LANEPOWER_POSITION_X")).SetValue(new Slider(Drawing.Width - 250, 0, Drawing.Width)));
                 LanePowerMisc.Menu.AddItem(new MenuItem("SAssembliesMiscsLanePowerPositionY", Language.GetString("MISCS_LANEPOWER_POSITION_Y")).SetValue(new Slider(Drawing.Height - 100, 0, Drawing.Height)));
                 LanePowerMisc.CreateActiveMenuItem("SAssembliesMiscsLanePowerActive", () => new LanePower());
@@ -296,6 +299,39 @@ namespace SAssemblies.Miscs
                     drawing.Value.CurrentDirection = PowerDiff.Orientation.Enemy;
                     directionText.text = "←";
                     directionText.Visible = true;
+                }
+            }
+
+            if (lowHpHero != null)
+            {
+                if (LanePowerMisc.GetMenuItem("SAssembliesMiscsLanePowerShowLowHP").GetValue<bool>())
+                {
+                    Obj_AI_Hero heroLowHp = heroes.FirstOrDefault(x => x.IsEnemy && x.IsVisible);
+                    if (heroLowHp != null)
+                    {
+                        foreach (Obj_AI_Hero hero in heroes)
+                        {
+                            if (hero.IsEnemy && hero.IsVisible)
+                            {
+                                if (heroLowHp.Health > hero.Health)
+                                {
+                                    heroLowHp = hero;
+                                }
+                            }
+                        }
+                        lowHpHero.text = "Visible low HP: " + heroLowHp.ChampionName + " (" + heroLowHp.Health.ToString("0") + " HP)";
+                        lowHpHero.X = posX + 100;
+                        lowHpHero.Y = posY + 20 + (3 * 50);
+                        lowHpHero.Visible = true;
+                    }
+                    else
+                    {
+                        lowHpHero.Visible = false;
+                    }
+                }
+                else
+                {
+                    lowHpHero.Visible = false;
                 }
             }
         }
@@ -435,6 +471,11 @@ namespace SAssemblies.Miscs
 
                 drawings.Add((Lane)i, new DrawingsClass() { Drawings = recs } );
             }
+
+            this.lowHpHero = new Render.Text("", new Vector2(posX + 100, posY + 20 + (4 * 50)), 16, Color.Orange);
+            this.lowHpHero.OutLined = true;
+            this.lowHpHero.Centered = true;
+            this.lowHpHero.Add(1);
         }
 
         private double MaxDiff(double value)

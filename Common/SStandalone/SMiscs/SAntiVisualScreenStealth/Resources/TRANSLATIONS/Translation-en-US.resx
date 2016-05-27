@@ -951,4 +951,7 @@
   <data name="MISCS_LANEPOWER_POSITION_Y" xml:space="preserve">
     <value>Position Y</value>
   </data>
+  <data name="MISCS_LANEPOWER_LOWHP" xml:space="preserve">
+    <value>Show low HP</value>
+  </data>
 </root>
