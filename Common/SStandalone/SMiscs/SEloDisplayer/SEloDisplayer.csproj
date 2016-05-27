@@ -49,8 +49,8 @@
     <Reference Include="LeagueSharp.Sandbox">
       <HintPath>D:\Spiele\Riot Games\LeagueSharp\System\LeagueSharp.Sandbox.dll</HintPath>
     </Reference>
-    <Reference Include="LeagueSharp.SDK">
-      <HintPath>D:\Spiele\Riot Games\LeagueSharp\System\LeagueSharp.SDK.dll</HintPath>
+    <Reference Include="LeagueSharp.SDKEx">
+      <HintPath>D:\Spiele\Riot Games\LeagueSharp\System\LeagueSharp.SDKEx.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>D:\Spiele\Riot Games\LeagueSharp\System\Newtonsoft.Json.dll</HintPath>

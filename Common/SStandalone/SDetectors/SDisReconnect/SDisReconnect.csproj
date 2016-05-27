@@ -48,8 +48,8 @@
     <Reference Include="LeagueSharp.Sandbox">
       <HintPath>D:\Spiele\Riot Games\LeagueSharp\System\LeagueSharp.Sandbox.dll</HintPath>
     </Reference>
-    <Reference Include="LeagueSharp.SDK">
-      <HintPath>D:\Spiele\Riot Games\LeagueSharp\System\LeagueSharp.SDK.dll</HintPath>
+    <Reference Include="LeagueSharp.SDKEx">
+      <HintPath>D:\Spiele\Riot Games\LeagueSharp\System\LeagueSharp.SDKEx.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>D:\Spiele\Riot Games\LeagueSharp\System\Newtonsoft.Json.dll</HintPath>
@@ -84,6 +84,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

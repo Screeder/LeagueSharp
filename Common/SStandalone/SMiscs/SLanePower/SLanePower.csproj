@@ -48,15 +48,15 @@
     <Reference Include="LeagueSharp.Sandbox">
       <HintPath>D:\Spiele\Riot Games\LeagueSharp\System\LeagueSharp.Sandbox.dll</HintPath>
     </Reference>
-    <Reference Include="LeagueSharp.SDK">
-      <HintPath>D:\Spiele\Riot Games\LeagueSharp\System\LeagueSharp.SDK.dll</HintPath>
+    <Reference Include="LeagueSharp.SDKEx">
+      <HintPath>D:\Spiele\Riot Games\LeagueSharp\System\LeagueSharp.SDKEx.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>D:\Spiele\Riot Games\LeagueSharp\System\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="SAssembliesLib, Version=1.0.6.10, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\SAssembliesLib\bin\Debug\SAssembliesLib.dll</HintPath>
+      <HintPath>D:\Spiele\Riot Games\LeagueSharp\System\SAssembliesLib.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX">
       <HintPath>D:\Spiele\Riot Games\LeagueSharp\System\SharpDX.dll</HintPath>
