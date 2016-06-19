@@ -1217,10 +1217,10 @@ namespace SAssemblies
         {
             string loc = Path.Combine(new[]
             {
-                SandboxConfig.DataDirectory, "Assemblies", "cache",
+                Config.AppDataDirectory, "Assemblies", "cache",
                 "SAssemblies", subFolder, name
             });
-            Directory.CreateDirectory(Path.Combine(SandboxConfig.DataDirectory,
+            Directory.CreateDirectory(Path.Combine(Config.AppDataDirectory,
                         "Assemblies", "cache", "SAssemblies", subFolder));
             File.WriteAllBytes(loc, bitmap/*(byte[])new ImageConverter().ConvertTo(bitmap, typeof(byte[]))*/);
         }
@@ -1235,7 +1235,7 @@ namespace SAssemblies
             name = ConvertNames(name);
             string loc = Path.Combine(new[]
             {
-                SandboxConfig.DataDirectory, "Assemblies", "cache",
+                Config.AppDataDirectory, "Assemblies", "cache",
                 "SAssemblies", subFolder, name
             });
             try
@@ -1699,7 +1699,7 @@ namespace SAssemblies
                 name = ConvertNames(name);
                 string loc = Path.Combine(new[]
                 {
-                    SandboxConfig.DataDirectory, "Assemblies", "cache",
+                    Config.AppDataDirectory, "Assemblies", "cache",
                     "SAssemblies", subFolder, name
                 });
                 try
@@ -3008,7 +3008,7 @@ namespace SAssemblies
 
         public static void SetLanguage()
         {
-            switch (Config.SelectedLanguage)
+            switch (SandboxConfig.Language)
             {
                 case "Arabic":
                     Thread.CurrentThread.CurrentUICulture = new CultureInfo("ar-SA");
@@ -3092,7 +3092,7 @@ namespace SAssemblies
 
     public static class PacketCatcher
     {
-        private static List<byte> exclude = new List<byte>() { 100, 65, 222, 20, 72, 132, 14, 208, 77, 11, 152, 164, 130, 58, 230, 227, 150, 111, 53, 34, 212, 23, 197, 104, 139, 252, 21, 202, 107, 123, 29, 102, 198, 13, 213, 87, 182, 109, 91, 128, 68, 161, 30, 200, 233, 97, 247, 44, 12, 63, 71, 48, 93, 168, 83, 4, 28, 124, 17, 75, 16, 82, 35, 121, };
+        private static List<byte> exclude = new List<byte>() { 8, 103, 171, 89, 47, 36, 64, 42, 95, 0, 49, 141, 163, 160, 195, 184, 62, 158, 84, 241, 33, 179, 70, 246, 10, 65, 233, 156, 53, 139, 29, 252, 77, 133, 168, 102, 14, 198, 123, 222, 19, 75, 208, 82, 124, 105, 72, 177, 23, 200, 135, };
         private static List<byte> list = new List<byte>() { }; 
 
         public static void Init()
