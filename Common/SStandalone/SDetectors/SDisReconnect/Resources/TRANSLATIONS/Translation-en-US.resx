@@ -954,4 +954,7 @@
   <data name="MISCS_LANEPOWER_LOWHP" xml:space="preserve">
     <value>Show low HP</value>
   </data>
+  <data name="TRACKERS_UI_DISABLESKILL_ONCD" xml:space="preserve">
+    <value>Disable show Skill on Cd</value>
+  </data>
 </root>
