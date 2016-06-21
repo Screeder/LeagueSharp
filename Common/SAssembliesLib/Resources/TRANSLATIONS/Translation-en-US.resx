@@ -957,4 +957,7 @@
   <data name="TRACKERS_UI_DISABLESKILL_ONCD" xml:space="preserve">
     <value>Disable show Skill on Cd</value>
   </data>
+  <data name="MISCS_PARTICLELOOPER_MAIN" xml:space="preserve">
+    <value>Particle Looper</value>
+  </data>
 </root>

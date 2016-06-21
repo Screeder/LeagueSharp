@@ -3008,7 +3008,7 @@ namespace SAssemblies
 
         public static void SetLanguage()
         {
-            switch (SandboxConfig.Language)
+            switch (SandboxConfig.SelectedLanguage)
             {
                 case "Arabic":
                     Thread.CurrentThread.CurrentUICulture = new CultureInfo("ar-SA");
