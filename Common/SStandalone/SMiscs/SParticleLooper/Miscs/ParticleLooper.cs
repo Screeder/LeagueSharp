@@ -52,14 +52,22 @@ namespace SAssemblies.Miscs
             {
                 var reader = new BinaryReader(new MemoryStream(args.PacketData));
                 byte packetId = reader.ReadByte(); //PacketId
-                int packet = -1;
+                List<int> packetIds = new List<int>();
                 if (Game.Version.Contains("6.12"))
                 {
-                    packet = 4;
+                    packetIds.Add(4);
                 }
-                if (packetId != packet) // Length: 12
-                    return;
-                args.Process = false;
+                if (Game.Version.Contains("6.13"))
+                {
+                    packetIds.Add(211);
+                }
+                foreach (int id in packetIds) //Length 12
+                {
+                    if (packetId == id)
+                    {
+                        args.Process = false;
+                    }
+                }
             }
             catch (Exception ex)
             {
