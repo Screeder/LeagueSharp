@@ -126,6 +126,10 @@ namespace SAssemblies.Miscs
             {
                 packetIds.Add(110);
             }
+            if (Game.Version.Contains("6.15"))
+            {
+                packetIds.Add(211);
+            }
             foreach (int id in packetIds) //Length 22
             {
                 if (packetId == id)
