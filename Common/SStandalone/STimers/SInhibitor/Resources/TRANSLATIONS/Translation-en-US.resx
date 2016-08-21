@@ -960,4 +960,13 @@
   <data name="MISCS_PARTICLELOOPER_MAIN" xml:space="preserve">
     <value>Particle Looper</value>
   </data>
+  <data name="MISCS_MAXRANGER_DISABLE_ALL" xml:space="preserve">
+    <value>Disable</value>
+  </data>
+  <data name="MISCS_MAXRANGER_DISABLE_COMBO" xml:space="preserve">
+    <value>Disable in Combo Mode</value>
+  </data>
+  <data name="MISCS_MAXRANGER_MAIN" xml:space="preserve">
+    <value>Max Ranger</value>
+  </data>
 </root>
