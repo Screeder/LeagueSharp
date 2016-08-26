@@ -75,7 +75,8 @@ namespace SAssemblies.Miscs
                 {
                     var maxRangePosition = ObjectManager.Player.ServerPosition.Extend(ObjectManager.Player.ServerPosition - hero.ServerPosition + ObjectManager.Player.ServerPosition, 
                                                                                         neededAdditionalDistance - distance + 95);
-                    ObjectManager.Player.IssueOrder(GameObjectOrder.MoveTo, maxRangePosition);
+                    //ObjectManager.Player.IssueOrder(GameObjectOrder.MoveTo, maxRangePosition);
+                    Orbwalking.MoveTo(maxRangePosition, 0, false, false, false);
                 }
             }
         }
