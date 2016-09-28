@@ -1,0 +1,107 @@
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using LeagueSharp;
+using LeagueSharp.Common;
+
+namespace SAssemblies.Miscs
+{
+    internal class SurrenderVote
+    {
+        public static Menu.MenuItemSettings SurrenderVoteMisc = new Menu.MenuItemSettings(typeof(SurrenderVote));
+
+        private int _lastNoVoteCount;
+
+        public SurrenderVote()
+        {
+            Game.OnProcessPacket += Game_OnGameProcessPacket;
+        }
+
+        ~SurrenderVote()
+        {
+            Game.OnProcessPacket -= Game_OnGameProcessPacket;
+        }
+
+        public bool IsActive()
+        {
+#if MISCS
+            return Misc.Miscs.GetActive() && SurrenderVoteMisc.GetActive();
+#else
+            return SurrenderVoteMisc.GetActive();
+#endif
+        }
+
+        public static Menu.MenuItemSettings SetupMenu(LeagueSharp.Common.Menu menu)
+        {
+            SurrenderVoteMisc.Menu = menu.AddSubMenu(new LeagueSharp.Common.Menu(Language.GetString("MISCS_SURRENDERVOTE_MAIN"), "SAssembliesMiscsSurrenderVote"));
+                SurrenderVoteMisc.Menu.AddItem(new MenuItem("SAssembliesMiscsSurrenderVoteChat", Language.GetString("GLOBAL_CHAT")).SetValue(false));
+            SurrenderVoteMisc.CreateActiveMenuItem("SAssembliesMiscsSurrenderVoteActive", () => new SurrenderVote());
+            return SurrenderVoteMisc;
+        }
+
+        private void Game_OnGameProcessPacket(GamePacketEventArgs args)
+        {
+            if (!IsActive())
+                return;
+
+            try
+            {
+                var reader = new BinaryReader(new MemoryStream(args.PacketData));
+                byte packetId = reader.ReadByte(); //PacketId
+                List<int> packetIds = new List<int>();
+                if (Game.Version.Contains("6.19"))
+                {
+                    packetIds.Add(84);
+                    packetIds.Add(11);
+                    packetIds.Add(9);
+                }
+                foreach (int id in packetIds) //Length 7 / 9
+                {
+                    if (packetId == id)
+                    {
+                        Console.WriteLine("ID: " + id);
+                        Array.ForEach(args.PacketData, x => Console.Write(x + " "));
+                        Console.WriteLine();
+                        Array.ForEach(args.PacketData, x => Console.Write(x.ToString("X") + " "));
+                        Console.WriteLine();
+                    }
+                }
+                return;
+                Packet.S2C.Surrender.Struct surrender = Packet.S2C.Surrender.Decoded(args.PacketData);
+
+                foreach (Obj_AI_Hero hero in ObjectManager.Get<Obj_AI_Hero>())
+                {
+                    if (hero.NetworkId == surrender.NetworkId)
+                    {
+                        if (surrender.NoVotes > _lastNoVoteCount)
+                        {
+                            if (
+                                SurrenderVoteMisc.GetMenuItem("SAssembliesMiscsSurrenderVoteChat").GetValue<bool>() &&
+                                Menu.GlobalSettings.GetMenuItem("SAssembliesGlobalSettingsServerChatPingActive")
+                                    .GetValue<bool>())
+                            {
+                                Game.Say("{0} voted NO", hero.ChampionName);
+                            }
+                        }
+                        else
+                        {
+                            if (
+                                SurrenderVoteMisc.GetMenuItem("SAssembliesMiscsSurrenderVoteChat").GetValue<bool>() &&
+                                Menu.GlobalSettings.GetMenuItem("SAssembliesGlobalSettingsServerChatPingActive")
+                                    .GetValue<bool>())
+                            {
+                                Game.Say("{0} voted YES", hero.ChampionName);
+                            }
+                        }
+                        break;
+                    }
+                }
+                _lastNoVoteCount = surrender.NoVotes;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("SurrenderProcess: " + ex);
+            }
+        }
+    }
+}

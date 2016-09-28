@@ -3092,7 +3092,7 @@ namespace SAssemblies
 
     public static class PacketCatcher
     {
-        private static List<byte> exclude = new List<byte>() { 60, 230, 200, 205, 58, 17, 99, 251, 95, 81, 23, 221, 83, 42, 79, 97, 103, 37, 153, 63, 122, 94, 132, 121, 147, 180, 135, 66, };
+        private static List<byte> exclude = new List<byte>() {  };
         private static List<byte> list = new List<byte>() { }; 
 
         public static void Init()
@@ -3107,6 +3107,21 @@ namespace SAssemblies
                     Console.WriteLine();
                     Array.ForEach(eventArgs.PacketData, x => Console.Write(x.ToString("X") + " "));
                     Console.WriteLine();
+                }
+            };
+
+            Drawing.OnDraw += delegate(EventArgs args)
+            {
+                int i = 0;
+                foreach (Obj_AI_Hero hero in ObjectManager.Get<Obj_AI_Hero>())
+                {
+                    byte[] networkId = BitConverter.GetBytes(hero.NetworkId);
+                    String networkIdStr = "";
+                    String networkIdStrX = "";
+                    Array.ForEach(networkId, x => networkIdStr += x + " ");
+                    Array.ForEach(networkId, x => networkIdStrX += x.ToString("X") + " ");
+                    Drawing.DrawText(300, 200 + (i * 20), Color.ForestGreen, $"{hero.ChampionName}: {networkIdStr} / {networkIdStrX}");
+                    i++;
                 }
             };
 
