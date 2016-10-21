@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{17654C7B-5CCD-4BBF-91D9-468613AEC648}</ProjectGuid>
+    <ProjectGuid>{D5EB585E-C58D-49AC-8572-D1248F030DEB}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>SSurrenderVote</RootNamespace>

@@ -38,31 +38,31 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="clipper_library">
-      <HintPath>D:\Spiele\Riot Games\LeagueSharp\System\clipper_library.dll</HintPath>
+      <HintPath>D:\Spiele\Riot Games\S7X0di0da\References\clipper_library.dll</HintPath>
     </Reference>
     <Reference Include="LeagueSharp">
-      <HintPath>D:\Spiele\Riot Games\LeagueSharp\System\LeagueSharp.dll</HintPath>
+      <HintPath>D:\Spiele\Riot Games\S7X0di0da\References\LeagueSharp.dll</HintPath>
     </Reference>
     <Reference Include="LeagueSharp.Common">
-      <HintPath>D:\Spiele\Riot Games\LeagueSharp\System\LeagueSharp.Common.dll</HintPath>
+      <HintPath>D:\Spiele\Riot Games\S7X0di0da\References\LeagueSharp.Common.dll</HintPath>
     </Reference>
     <Reference Include="LeagueSharp.Sandbox">
-      <HintPath>D:\Spiele\Riot Games\LeagueSharp\System\LeagueSharp.Sandbox.dll</HintPath>
+      <HintPath>D:\Spiele\Riot Games\S7X0di0da\System\LeagueSharp.Sandbox.dll</HintPath>
     </Reference>
     <Reference Include="LeagueSharp.SDKEx">
-      <HintPath>D:\Spiele\Riot Games\LeagueSharp\System\LeagueSharp.SDKEx.dll</HintPath>
+      <HintPath>D:\Spiele\Riot Games\S7X0di0da\References\LeagueSharp.SDKEx.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json">
-      <HintPath>D:\Spiele\Riot Games\LeagueSharp\System\Newtonsoft.Json.dll</HintPath>
+      <HintPath>D:\Spiele\Riot Games\S7X0di0da\References\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="SAssembliesLib">
-      <HintPath>D:\Spiele\Riot Games\LeagueSharp\System\SAssembliesLib.dll</HintPath>
+      <HintPath>D:\Spiele\Riot Games\S7X0di0da\References\SAssembliesLib.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX">
-      <HintPath>D:\Spiele\Riot Games\LeagueSharp\System\SharpDX.dll</HintPath>
+      <HintPath>D:\Spiele\Riot Games\S7X0di0da\References\SharpDX.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.Direct3D9">
-      <HintPath>D:\Spiele\Riot Games\LeagueSharp\System\SharpDX.Direct3D9.dll</HintPath>
+      <HintPath>D:\Spiele\Riot Games\S7X0di0da\References\SharpDX.Direct3D9.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

@@ -174,7 +174,7 @@ namespace SAssemblies.Trackers
                 if (enemy.Value.SpriteInfo != null && enemy.Value.SpriteInfo.DownloadFinished && !enemy.Value.SpriteInfo.LoadingFinished)
                 {
                     enemy.Value.SpriteInfo.Sprite.GrayScale();
-                    enemy.Value.SpriteInfo.Sprite.UpdateTextureBitmap(CropImage(enemy.Value.SpriteInfo.Sprite.Bitmap, enemy.Value.SpriteInfo.Sprite.Width));
+                    enemy.Value.SpriteInfo.Sprite.UpdateTextureBitmap(SpriteHelper.CropImage(enemy.Value.SpriteInfo.Sprite.Bitmap, enemy.Value.SpriteInfo.Sprite.Width));
                     enemy.Value.SpriteInfo.Sprite.Scale = new Vector2(((float)24 / enemy.Value.SpriteInfo.Sprite.Width) * percentScale, ((float)24 / enemy.Value.SpriteInfo.Sprite.Height) * percentScale);
                     enemy.Value.SpriteInfo.Sprite.PositionUpdate = delegate
                     {
@@ -216,24 +216,6 @@ namespace SAssemblies.Trackers
             {
                 enemy.Value.Name = SpriteHelper.DownloadImageRiot(enemy.Key.ChampionName, SpriteHelper.ChampionType.Champion, SpriteHelper.DownloadType.Champion, "UIM");
             }
-        }
-
-        public static Bitmap CropImage(Bitmap srcBitmap, int imageWidth)
-        {
-            Bitmap finalImage = new Bitmap(imageWidth, imageWidth);
-            System.Drawing.Rectangle cropRect = new System.Drawing.Rectangle(0, 0,
-                imageWidth, imageWidth);
-
-            using (Bitmap sourceImage = srcBitmap)
-            using (Bitmap croppedImage = sourceImage.Clone(cropRect, sourceImage.PixelFormat))
-            using (TextureBrush tb = new TextureBrush(croppedImage))
-            using (Graphics g = Graphics.FromImage(finalImage))
-            {
-                g.FillEllipse(tb, 0, 0, imageWidth, imageWidth);
-                Pen p = new Pen(System.Drawing.Color.Black, 10) { Alignment = PenAlignment.Inset };
-                g.DrawEllipse(p, 0, 0, imageWidth, imageWidth);
-            }
-            return finalImage;
         }
 
         class InternalMinimapTracker

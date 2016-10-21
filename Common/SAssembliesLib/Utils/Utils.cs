@@ -751,7 +751,7 @@ namespace SAssemblies
 
         static SpriteHelper()
         {
-            Assembly assembly = Assembly.GetCallingAssembly();
+            Assembly assembly = Assembly.GetExecutingAssembly();
             List<String> resources = new List<string>() { ".Resources.SPRITES.AutoBuy.AutoBuy", ".Resources.SPRITES.AutoLevler.AutoLevler",
                 ".Resources.SPRITES.EloDisplayer.EloDisplayer", ".Resources.SPRITES.SmartPing.SmartPing", ".Resources.SPRITES.Ui.Ui" };
             foreach (string resource in resources)
@@ -784,6 +784,24 @@ namespace SAssemblies
                     continue;
                 }
             }
+        }
+
+        public static Bitmap CropImage(Bitmap srcBitmap, int imageWidth)
+        {
+            Bitmap finalImage = new Bitmap(imageWidth, imageWidth);
+            System.Drawing.Rectangle cropRect = new System.Drawing.Rectangle(0, 0,
+                imageWidth, imageWidth);
+
+            using (Bitmap sourceImage = srcBitmap)
+            using (Bitmap croppedImage = sourceImage.Clone(cropRect, sourceImage.PixelFormat))
+            using (TextureBrush tb = new TextureBrush(croppedImage))
+            using (Graphics g = Graphics.FromImage(finalImage))
+            {
+                g.FillEllipse(tb, 0, 0, imageWidth, imageWidth);
+                Pen p = new Pen(System.Drawing.Color.Black, 10) { Alignment = PenAlignment.Inset };
+                g.DrawEllipse(p, 0, 0, imageWidth, imageWidth);
+            }
+            return finalImage;
         }
 
         private static Dictionary<String, Bitmap> cachedMaps = new Dictionary<string, Bitmap>();
@@ -1948,6 +1966,144 @@ namespace SAssemblies
 
     public static class DirectXDrawer
     {
+
+        public class ScreenPositionInfo
+        {
+            public Vector2 Position;
+            public Vector2 Direction;
+            public float Angle;
+
+            public ScreenPositionInfo(Vector2 position, Vector2 direction, float angle)
+            {
+                Position = position;
+                Direction = direction;
+                Angle = angle;
+            }
+        }
+
+        private static Vector2 screenOffset = new Vector2(-1, -1);
+
+        private static Vector2 GetWorldCenter()
+        {
+            var topLeftWorld = Drawing.ScreenToWorld(new Vector2(0, 0));
+
+            return topLeftWorld.To2D() + InitializeScreenOffset();
+        }
+
+        private static Vector2 InitializeScreenOffset()
+        {
+            if (screenOffset != new Vector2(-1 , -1))
+            {
+                return screenOffset;
+            }
+
+            var topLeftWorld = Drawing.ScreenToWorld(new Vector2(500, 500));
+            topLeftWorld.Z = 0;
+
+            Vector3 testPosition = topLeftWorld;
+
+            var lastScreenPos = Drawing.WorldToScreen(testPosition);
+
+            testPosition.X += 5;
+            testPosition.Y += 5;
+
+            var screenPos = Drawing.WorldToScreen(testPosition);
+            var screenSign = new Vector2(Math.Sign(screenPos.X - lastScreenPos.X),
+                                        Math.Sign(screenPos.Y - lastScreenPos.Y));
+
+            for (int i = 0; i < Math.Max(Drawing.Width, Drawing.Height) / 5; i++)
+            {
+                testPosition.X += screenSign.X * Math.Sign((Drawing.Width / 2f) - screenPos.X) * 5;
+                testPosition.Y += screenSign.Y * Math.Sign((Drawing.Height / 2f) - screenPos.Y) * 5;
+
+                screenPos = Drawing.WorldToScreen(testPosition);
+            }
+
+            screenOffset = new Vector2(testPosition.X - topLeftWorld.X, testPosition.Y - topLeftWorld.Y);
+
+            return screenOffset;
+        }
+
+        public static ScreenPositionInfo GetScreenPosition(Vector3 position3D, Size? size = null, bool insideScreen = true)
+        {
+            var position = position3D.To2D();
+
+            var worldCenter = GetWorldCenter();
+            var screenCenter = Drawing.WorldToScreen(worldCenter.To3D().SetZ(0));
+
+            if (position3D.IsOnScreen())
+            {
+                var screenPosition = Drawing.WorldToScreen(position3D);
+                if (insideScreen)
+                {
+                    int apparentX = (int)Math.Max(1, Math.Min(screenPosition.X, Drawing.Width - (size?.Width ?? 0)));
+                    int apparentY = (int)Math.Max(1, Math.Min(screenPosition.Y, Drawing.Height - (size?.Height ?? 0)));
+
+                    return new ScreenPositionInfo(new Vector2(apparentX, apparentY), (screenPosition - screenCenter).Normalized(), 0);
+                }
+
+                return new ScreenPositionInfo(screenPosition, (screenPosition - screenCenter).Normalized(), 0);
+            }
+
+            var worldDir = (position - worldCenter).Normalized();
+            var worldClosePosition = worldCenter + worldDir * 100;
+
+            var screenClosePosition = Drawing.WorldToScreen(worldClosePosition.To3D().SetZ(0));
+
+            var dir = (screenClosePosition - screenCenter).Normalized();
+            var screenFarPosition = screenCenter + dir * (Math.Max(Drawing.Width, Drawing.Height) + 100);
+
+            var ray = new Ray(screenFarPosition.To3D().SetZ(0), -dir.To3D().SetZ(0));
+
+            var boundingBox = new BoundingBox(new Vector3(0, 0, -1),
+                new Vector3(Drawing.Width, Drawing.Height, 1));
+
+            float dist;
+            var hasIntersection = ray.Intersects(ref boundingBox, out dist);
+
+            if (hasIntersection)
+            {
+                var screenPosition = screenFarPosition - dir * (dist);
+
+                if (insideScreen)
+                {
+                    int apparentX = (int)Math.Max(1, Math.Min(screenPosition.X, Drawing.Width - (size?.Width ?? 0)));
+                    int apparentY = (int)Math.Max(1, Math.Min(screenPosition.Y, Drawing.Height - (size?.Height ?? 0)));
+
+                    return new ScreenPositionInfo(new Vector2(apparentX, apparentY), (screenPosition - screenCenter).Normalized(), (float)Math.Atan2(dir.Y, dir.X));
+                }
+
+                return new ScreenPositionInfo(screenPosition, (screenPosition - screenCenter).Normalized(), (float)Math.Atan2(dir.Y, dir.X));               
+            }
+
+            return new ScreenPositionInfo(new Vector2(), new Vector2(), 0);
+        }
+
+        public static SharpDX.RectangleF GetAABBBox(Render.Sprite sprite)
+        {
+            var matrix = (Matrix.Scaling(sprite.Scale.X, sprite.Scale.Y, 0))
+                        * Matrix.RotationZ(sprite.Rotation)
+                        * Matrix.Translation(sprite.Position.X, sprite.Position.Y, 0);
+
+            // Calculate the position of the four corners in world space by applying
+            // The world matrix to the four corners in object space (0, 0, width, height)
+            Vector4 tl = Vector2.Transform(Vector2.Zero, matrix);
+            Vector4 tr = Vector2.Transform(new Vector2(sprite.Size.X, 0), matrix);
+            Vector4 bl = Vector2.Transform(new Vector2(0, sprite.Size.Y), matrix);
+            Vector4 br = Vector2.Transform(sprite.Size, matrix);
+
+            // Find the minimum and maximum "corners" based on the ones above
+            float minX = Math.Min(tl.X, Math.Min(tr.X, Math.Min(bl.X, br.X)));
+            float maxX = Math.Max(tl.X, Math.Max(tr.X, Math.Max(bl.X, br.X)));
+            float minY = Math.Min(tl.Y, Math.Min(tr.Y, Math.Min(bl.Y, br.Y)));
+            float maxY = Math.Max(tl.Y, Math.Max(tr.Y, Math.Max(bl.Y, br.Y)));
+            Vector2 min = new Vector2(minX, minY);
+            Vector2 max = new Vector2(maxX, maxY);
+
+            // And create the AABB
+            return new SharpDX.RectangleF(min.X, min.Y, (max - min).X, (max - min).Y);
+        }
+
         public static void InternalRender(Vector3 target)
         {
             Drawing.Direct3DDevice.SetTransform(TransformState.World, Matrix.Translation(target));
@@ -3093,12 +3249,17 @@ namespace SAssemblies
     public static class PacketCatcher
     {
         private static List<byte> exclude = new List<byte>() { 131, 222, 85, 46, 55, 9, 56, 15, 112, 129, 87, 58, 184, 254, 65, 101, 25, 34, 172, 38, 5, 23, 211, 205, 157, 83, 12, 30, 161, 166, 67, 48, };
-        private static List<byte> list = new List<byte>() { }; 
+        private static List<byte> list = new List<byte>() { };
+
+        public static bool Active = true;
 
         public static void Init()
         {
             Game.OnProcessPacket += delegate(GamePacketEventArgs eventArgs)
             {
+                if (!Active)
+                    return;
+
                 if (!list.Contains(eventArgs.PacketData[0]) && !exclude.Contains(eventArgs.PacketData[0]))
                 {
                     list.Add(eventArgs.PacketData[0]);
@@ -3112,6 +3273,9 @@ namespace SAssemblies
 
             Drawing.OnDraw += delegate(EventArgs args)
             {
+                if (!Active)
+                    return;
+
                 int i = 0;
                 foreach (Obj_AI_Hero hero in ObjectManager.Get<Obj_AI_Hero>())
                 {
