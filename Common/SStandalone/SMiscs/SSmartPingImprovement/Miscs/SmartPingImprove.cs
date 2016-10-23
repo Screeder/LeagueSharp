@@ -64,6 +64,9 @@ namespace SAssemblies.Miscs
             Obj_AI_Hero hero = args.Source as Obj_AI_Hero;
             if (hero != null && hero.IsValid)
             {
+                if (hero.IsMe)
+                    return;
+
                 foreach (var info in pingInfo)
                 {
                     if (info.NetworkId == hero.NetworkId && info.Time - 2 < Game.Time && info.Type == args.PingType)
