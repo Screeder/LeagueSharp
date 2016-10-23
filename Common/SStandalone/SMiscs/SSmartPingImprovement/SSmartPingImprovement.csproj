@@ -105,6 +105,8 @@
     <EmbeddedResource Include="Resources\SPRITES\SmartPing\pingmarker_red.png" />
     <EmbeddedResource Include="Resources\SPRITES\SmartPing\pingmia.png" />
     <EmbeddedResource Include="Resources\SPRITES\SmartPing\pingomw.png" />
+	<EmbeddedResource Include="Resources\SPRITES\SmartPing\pingmarker_green.png" />
+    <EmbeddedResource Include="Resources\SPRITES\SmartPing\pingmarker_yellow.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

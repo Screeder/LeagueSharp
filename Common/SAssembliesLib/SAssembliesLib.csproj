@@ -106,6 +106,8 @@
     <EmbeddedResource Include="Resources\SPRITES\SmartPing\pingmarker_red.png" />
     <EmbeddedResource Include="Resources\SPRITES\SmartPing\pingmia.png" />
     <EmbeddedResource Include="Resources\SPRITES\SmartPing\pingomw.png" />
+	<EmbeddedResource Include="Resources\SPRITES\SmartPing\pingmarker_green.png" />
+    <EmbeddedResource Include="Resources\SPRITES\SmartPing\pingmarker_yellow.png" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\SPRITES\AutoBuy\AutoBuy.resx">

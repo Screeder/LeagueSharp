@@ -109,6 +109,26 @@ namespace SAssemblies.Resources.SPRITES.SmartPing {
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
+		
+		/// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap pingmarker_green {
+            get {
+                object obj = ResourceManager.GetObject("pingmarker_green", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+		
+		/// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap pingmarker_yellow {
+            get {
+                object obj = ResourceManager.GetObject("pingmarker_yellow", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
         
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.

@@ -64,8 +64,8 @@ namespace SAssemblies.Miscs
             Obj_AI_Hero hero = args.Source as Obj_AI_Hero;
             if (hero != null && hero.IsValid)
             {
-                if (hero.IsMe)
-                    return;
+                //if (hero.IsMe)
+                //    return;
 
                 foreach (var info in pingInfo)
                 {
@@ -87,6 +87,14 @@ namespace SAssemblies.Miscs
                         break;
 
                     case PingCategory.OnMyWay:
+                        CreateSprites(pingInfoN);
+                        break;
+
+                    case PingCategory.EnemyMissing:
+                        CreateSprites(pingInfoN);
+                        break;
+
+                    case PingCategory.Fallback:
                         CreateSprites(pingInfoN);
                         break;
                 }
@@ -135,7 +143,8 @@ namespace SAssemblies.Miscs
             foreach (var info in pingInfo.ToList())
             {
                 if (!Common.IsOnScreen(DirectXDrawer.GetScreenPosition(info.Pos.To3D2(), null, false).Position) && 
-                    (info.Type == PingCategory.AssistMe || info.Type == PingCategory.Danger || info.Type == PingCategory.OnMyWay))
+                    (info.Type == PingCategory.AssistMe || info.Type == PingCategory.Danger || info.Type == PingCategory.OnMyWay ||
+                    info.Type == PingCategory.EnemyMissing || info.Type == PingCategory.Fallback))
                 {
                     DrawCircle(info.IconBackground.Sprite.Position.X + info.IconBackground.Sprite.Width / 2f,
                         info.IconBackground.Sprite.Position.Y + info.IconBackground.Sprite.Height / 2f,
@@ -311,10 +320,26 @@ namespace SAssemblies.Miscs
 
                 case PingCategory.OnMyWay:
                     iconName = "pingomw";
-                    iconBackgroundName = "pingmarker";
+                    iconBackgroundName = "pingmarker_green";
                     directionName = "directionindicator";
                     typeName = "OnMyWay";
                     directionColor = SharpDX.Color.MediumSeaGreen;
+                    break;
+
+                case PingCategory.Fallback:
+                    iconName = "pingmia";
+                    iconBackgroundName = "pingmarker_yellow";
+                    directionName = "directionindicator";
+                    typeName = "Fallback";
+                    directionColor = SharpDX.Color.Yellow;
+                    break;
+
+                case PingCategory.EnemyMissing:
+                    iconName = "pingmia";
+                    iconBackgroundName = "pingmarker_yellow";
+                    directionName = "directionindicator";
+                    typeName = "Miss";
+                    directionColor = SharpDX.Color.Yellow;
                     break;
             }
 
