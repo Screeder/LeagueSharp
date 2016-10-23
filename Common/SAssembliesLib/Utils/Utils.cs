@@ -453,7 +453,7 @@ namespace SAssemblies
         public static bool IsOnScreen(Vector3 vector)
         {
             Vector2 screen = Drawing.WorldToScreen(vector);
-            if (screen[0] < 0 || screen[0] > Drawing.Width || screen[1] < 0 || screen[1] > Drawing.Height)
+            if (screen[0] < 1 || screen[0] > Drawing.Width - 1 || screen[1] < 1 || screen[1] > Drawing.Height - 1)
                 return false;
             return true;
         }
@@ -461,7 +461,7 @@ namespace SAssemblies
         public static bool IsOnScreen(Vector2 vector)
         {
             Vector2 screen = vector;
-            if (screen[0] < 0 || screen[0] > Drawing.Width || screen[1] < 0 || screen[1] > Drawing.Height)
+            if (screen[0] < 1 || screen[0] > Drawing.Width - 1 || screen[1] < 1 || screen[1] > Drawing.Height - 1)
                 return false;
             return true;
         }

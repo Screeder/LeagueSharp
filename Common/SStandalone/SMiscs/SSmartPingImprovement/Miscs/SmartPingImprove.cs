@@ -131,8 +131,8 @@ namespace SAssemblies.Miscs
 
             foreach (var info in pingInfo.ToList())
             {
-                if (IsActive() && !Common.IsOnScreen(Drawing.WorldToScreen(info.Pos.To3D2())) && 
-                    info.Type == PingCategory.AssistMe || info.Type == PingCategory.Danger/* || info.Type == PingCategory.OnMyWay*/)
+                if (!Common.IsOnScreen(DirectXDrawer.GetScreenPosition(info.Pos.To3D2(), null, false).Position) && 
+                    (info.Type == PingCategory.AssistMe || info.Type == PingCategory.Danger || info.Type == PingCategory.OnMyWay))
                 {
                     DrawCircle(info.IconBackground.Sprite.Position.X + info.IconBackground.Sprite.Width / 2f,
                         info.IconBackground.Sprite.Position.Y + info.IconBackground.Sprite.Height / 2f,
@@ -282,7 +282,6 @@ namespace SAssemblies.Miscs
 
         private void CreateSprites(PingInfo info)
         {
-            Console.WriteLine("Sprites");
             String iconName = null;
             String iconBackgroundName = null;
             String directionName = null;
