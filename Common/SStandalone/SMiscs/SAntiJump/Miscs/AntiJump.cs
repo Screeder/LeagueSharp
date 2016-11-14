@@ -15,7 +15,7 @@ namespace SAssemblies.Miscs
     class AntiJump
     {
         public static Menu.MenuItemSettings AntiJumpMisc = new Menu.MenuItemSettings(typeof(AntiJump));
-        public static List<Champ> Champion = null;
+        public static List<Champ> Champion = new List<Champ>();
 
         public AntiJump()
         {
